@@ -1,0 +1,7 @@
+/nbproject
+/var/data/*
+!/var/data/README.md
+/var/export/*
+!/var/export/README.md
+/var/logs/*
+!/var/logs/README.md

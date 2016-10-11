@@ -7,11 +7,8 @@
 #
 include_once('common.php');
 
-
 class MetricsFetcher {
-    
     public function fetchData() {
-
         set_note_app_name('Metrics Data Fetch');
         note('Starting Metrics Data Fetch');
 
@@ -32,26 +29,9 @@ class MetricsFetcher {
             'ws_object_list.json'
         ];
 
-
-        # See if we are at least 24 hours past the last data generation time.
-        # now comes in handy later too.
-        $now = new DateTime('now', new DateTimeZone('utc'));
-        note('Current time for comparison is ' . $now->format('c'));
-
         note("Ready to fetch data");
 
-        # If so, create a new directory named after the expected data generation time.
-        # The generation time should be based on todays date, at time 0 UTC.
-        #
-        #
-        # Fetch the files via curl, copying into a temporary directory
-        #
-
-
-        // $tempDir = mk_temp_dir();
         $destDir = 'var/data';
-
-        $dataGenerationTime = null;
 
         foreach ($filesToFetch as $file) {
             note('Fetching ' . $url . '/' . $file);
@@ -96,16 +76,8 @@ class MetricsFetcher {
             fwrite($fp, json_encode($header, JSON_PRETTY_PRINT));
             fclose($fp);
 
-
             curl_close($ch);
-
-            # Read the data generation time from the files.
-            # NB: we assume local pacific time until we get the times into full iso8601.
-            # 11/6: it appears to be in GMT already, although the TZ is not attached to the date, so switching to utc.
-            if ($file === 'recent.json') {
-                $dataGenerationTime = new DateTime($data->meta->generated, new DateTimeZone('utc'));
-            }
-        }
+       }
 
         note('Finished Metrics Data Fetch');
     }
